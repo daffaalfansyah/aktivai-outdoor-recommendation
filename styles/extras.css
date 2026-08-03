@@ -1,0 +1,229 @@
+.history-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(39, 54, 49, 0.08);
+  min-height: 0;
+}
+
+.places-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(39, 54, 49, 0.08);
+  min-height: 0;
+}
+
+.empty-state {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.history-list {
+  display: grid;
+  gap: 8px;
+  min-height: 174px;
+}
+
+.places-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 560px; /* within desired 520–600px */
+  overflow-y: auto;
+  width: 100%;
+}
+
+.places-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.places-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 42%, transparent);
+}
+
+.places-hint {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--green) 34%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--green) 9%, var(--panel));
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.places-hint strong,
+.places-hint span {
+  display: block;
+}
+
+.places-hint strong {
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.places-hint span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.places-hint--warning {
+  border-color: color-mix(in srgb, var(--amber) 48%, var(--line));
+  background: color-mix(in srgb, var(--amber) 10%, var(--panel));
+}
+
+.place-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 88%, var(--paper));
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.place-card:hover {
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+.place-pin {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px 999px 999px 0;
+  background: var(--green);
+  transform: rotate(-45deg);
+}
+
+.place-pin::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  background: var(--panel);
+}
+
+.place-card strong,
+.place-card p,
+.place-card small,
+.place-action {
+  display: block;
+}
+
+.place-card__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.place-card strong {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+}
+
+.place-card p {
+  margin: 4px 0;
+  color: var(--green);
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.place-card small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.place-action {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 12%, var(--panel));
+  color: var(--blue);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 88%, var(--paper));
+}
+
+.history-item strong,
+.history-item span {
+  display: block;
+}
+
+.history-item strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-item span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.history-item b {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--panel-soft);
+  color: var(--green);
+}
+
+@media (max-width: 560px) {
+  .history-panel,
+  .places-panel {
+    padding: 18px;
+  }
+
+  .places-list {
+    max-height: 360px;
+  }
+}
+
+@media print {
+  .theme-toggle,
+  .map-card,
+  .history-panel {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .dashboard {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}

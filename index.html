@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>AktivAI Outdoor</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="preconnect" href="https://geocoding-api.open-meteo.com" />
+    <link rel="preconnect" href="https://air-quality-api.open-meteo.com" />
+    <link rel="preconnect" href="https://tile.openstreetmap.org" />
+    <link rel="preconnect" href="https://a.basemaps.cartocdn.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="desktop.css?v=1.0.3" />
+    <link rel="stylesheet" href="mobile.css?v=1.0.3" />
+    <link rel="stylesheet" href="styles/extras.css?v=1.0.3" />
+  </head>
+  <body>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti tema">
+      <span class="theme-toggle__knob"></span>
+      <span id="themeLabel">Mode gelap</span>
+    </button>
+    <main class="app-shell">
+      <section class="hero" aria-label="Rekomendasi aktivitas luar ruang">
+        <img class="hero__image" src="assets/hero-outdoor-ai.png" alt="" />
+        <div class="hero__shade"></div>
+        <div class="hero__content">
+          <p class="eyebrow">AI outdoor recommendation</p>
+          <h1>AktivAI Outdoor</h1>
+          <p class="hero__copy">
+            Pilih lokasi tujuan, lalu sistem menilai cuaca dan kualitas udara untuk menentukan apakah aktivitas luar ruang aman dan nyaman.
+          </p>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-live="polite">
+        <div class="status-strip" id="statusStrip">
+          <span class="status-dot"></span>
+          <span id="statusText">Memuat rekomendasi awal untuk Jakarta...</span>
+          <span class="ai-badge" id="aiBadge">
+            <span class="ai-badge__dot"></span>
+            <span id="aiBadgeText">AI sedang menyiapkan</span>
+          </span>
+        </div>
+
+        <section class="dashboard-grid">
+          <div class="dashboard-main">
+            <article class="map-card">
+              <div class="section-heading">
+                <p class="section-kicker">Lokasi tujuan</p>
+                <h2>Cari kota atau klik titik di peta</h2>
+              </div>
+              <form class="search-panel map-search" id="searchForm">
+                <label for="locationInput">Nama lokasi</label>
+                <div class="search-row-wrapper">
+                  <div class="search-row">
+                    <input id="locationInput" name="location" type="search" placeholder="Contoh: Bandung, Jakarta, Bali" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" />
+                    <button type="submit">Cek</button>
+                  </div>
+                  <ul id="locationAutocomplete" class="autocomplete-list"></ul>
+                </div>
+                <div class="quick-locations" aria-label="Lokasi cepat">
+                  <button type="button" data-place="Jakarta">Jakarta</button>
+                  <button type="button" data-place="Bandung">Bandung</button>
+                  <button type="button" data-place="Yogyakarta">Yogyakarta</button>
+                  <button type="button" data-place="Denpasar">Denpasar</button>
+                </div>
+              </form>
+              <div class="map-canvas" id="mapCanvas" role="application" aria-label="Peta interaktif untuk memilih lokasi"></div>
+              <div class="coordinate-row">
+                <span id="coordinateText">Lat -6.18, Lon 106.82</span>
+                <button type="button" id="useCurrentLocation">Gunakan lokasiku</button>
+              </div>
+              <div class="region-details" aria-label="Detail wilayah">
+                <div>
+                  <span>Kecamatan</span>
+                  <strong id="districtName">-</strong>
+                </div>
+                <div>
+                  <span>Kota/Kabupaten</span>
+                  <strong id="cityName">-</strong>
+                </div>
+                <div>
+                  <span>Provinsi</span>
+                  <strong id="provinceName">-</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-panel">
+              <div class="section-heading">
+                <p class="section-kicker">Rencana hari ini</p>
+                <h2>Jam paling aman</h2>
+              </div>
+              <div class="timeline-guide">
+                <span><b class="legend-dot legend-dot--good"></b>Hijau: paling nyaman</span>
+                <span><b class="legend-dot legend-dot--ok"></b>Kuning: pilih aktivitas ringan</span>
+                <span><b class="legend-dot legend-dot--bad"></b>Merah: lebih baik ditunda</span>
+              </div>
+              <div class="hourly-timeline" id="hourlyTimeline"></div>
+            </article>
+
+            <section class="metric-grid" id="metricGrid" aria-label="Metrik cuaca dan udara"></section>
+
+            <article class="recommendation-list">
+              <div class="section-heading">
+                <p class="section-kicker">Rekomendasi aktivitas outdoor</p>
+                <h2>Pilihan yang cocok untuk lokasi ini</h2>
+              </div>
+              <div id="activityIntroContainer"></div>
+              <div id="activityList" class="activity-list"></div>
+            </article>
+          </div>
+
+          <aside class="dashboard-side">
+            <article class="score-panel" id="scorePanel">
+              <div>
+                <p class="section-kicker">Skor kelayakan</p>
+                <h2 id="recommendationTitle">Menganalisis...</h2>
+                <p id="recommendationText">Data sedang diproses.</p>
+              </div>
+              <div class="score-ring" id="scoreRing" style="--score: 0">
+                <span id="scoreValue">0</span>
+                <small>/100</small>
+              </div>
+            </article>
+
+            <article class="weather-card">
+              <div class="weather-copy">
+                <span id="weatherVisualTitle">Kondisi visual</span>
+                <p id="weatherVisualText">Animasi mengikuti cuaca di lokasi yang dipilih.</p>
+              </div>
+              <div class="weather-scene weather-clear" id="weatherScene" aria-hidden="true">
+                <span class="sun"></span>
+                <span class="cloud cloud-one"></span>
+                <span class="cloud cloud-two"></span>
+                <span class="rain rain-one"></span>
+                <span class="rain rain-two"></span>
+                <span class="rain rain-three"></span>
+                <span class="bolt"></span>
+                <span class="mist mist-one"></span>
+                <span class="mist mist-two"></span>
+              </div>
+            </article>
+
+            <article class="location-panel">
+              <p class="section-kicker">Lokasi aktif</p>
+              <h2 id="locationName">Jakarta</h2>
+              <p id="updatedAt">Menunggu data terbaru</p>
+              <div class="mini-grid">
+                <div>
+                  <span>Waktu terbaik</span>
+                  <strong id="bestTime">-</strong>
+                </div>
+                <div>
+                  <span>Risiko utama</span>
+                  <strong id="mainRisk">-</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="preference-panel">
+              <div class="section-heading">
+                <p class="section-kicker">Preferensi</p>
+                <h2>Preferensi Aktivitas</h2>
+              </div>
+              <div class="preference-group">
+                <span>Intensitas</span>
+                <div class="segmented-control" id="intensityControl" aria-label="Pilih intensitas aktivitas">
+                  <button type="button" class="is-active" data-intensity="light">Light</button>
+                  <button type="button" data-intensity="medium">Medium</button>
+                  <button type="button" data-intensity="heavy">Heavy</button>
+                </div>
+              </div>
+              <div class="intensity-guide-container">
+                <button type="button" class="intensity-guide-toggle" id="intensityGuideToggle" aria-expanded="false" aria-controls="intensityGuidePanel">
+                  <span>Apa arti Light, Medium, dan Heavy?</span>
+                  <svg class="chevron-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <div class="intensity-guide-panel" id="intensityGuidePanel" hidden>
+                  <div class="intensity-guide-inner">
+                    <div class="guide-item guide-item--light">
+                      <div class="guide-header">
+                        <span class="guide-dot guide-dot--light"></span>
+                        <h4>Light</h4>
+                      </div>
+                      <p class="guide-description">Aktivitas dengan intensitas rendah yang cocok untuk pengguna yang ingin bersantai atau melakukan aktivitas luar ruangan dengan tenaga ringan.</p>
+                      <p class="guide-examples"><strong>Contoh:</strong> Bird Watching, Piknik, Fotografi Alam, Jalan Santai</p>
+                    </div>
+                    <div class="guide-item guide-item--medium">
+                      <div class="guide-header">
+                        <span class="guide-dot guide-dot--medium"></span>
+                        <h4>Medium</h4>
+                      </div>
+                      <p class="guide-description">Aktivitas dengan intensitas sedang yang membutuhkan tenaga lebih dan cocok untuk olahraga ringan maupun rekreasi aktif.</p>
+                      <p class="guide-examples"><strong>Contoh:</strong> Gravel Cycling, Jogging, Badminton, Bersepeda Santai</p>
+                    </div>
+                    <div class="guide-item guide-item--heavy">
+                      <div class="guide-header">
+                        <span class="guide-dot guide-dot--heavy"></span>
+                        <h4>Heavy</h4>
+                      </div>
+                      <p class="guide-description">Aktivitas dengan intensitas tinggi yang membutuhkan stamina lebih besar dan lebih disarankan dilakukan ketika kondisi lingkungan mendukung.</p>
+                      <p class="guide-examples"><strong>Contoh:</strong> Hiking, Trail Running, Camping, Rafting</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </article>
+
+            <article class="checklist-panel">
+              <div class="section-heading">
+                <p class="section-kicker">Persiapan</p>
+                <h2>Checklist otomatis</h2>
+              </div>
+              <div class="checklist-list" id="checklistList"></div>
+            </article>
+
+            <article class="history-panel">
+              <div class="section-heading">
+                <p class="section-kicker">Riwayat</p>
+                <h2>Lokasi terakhir</h2>
+              </div>
+              <div class="history-list" id="historyList"></div>
+            </article>
+
+          </aside>
+        </section>
+
+        <article class="places-panel">
+          <div class="section-heading">
+            <p class="section-kicker">Place to go</p>
+            <h2>Tempat sekitar titik ini</h2>
+          </div>
+          <div class="places-list" id="placesList"></div>
+        </article>
+
+        <article class="reason-panel">
+          <div class="section-heading">
+            <p class="section-kicker">Kenapa hasilnya begitu?</p>
+            <h2>Pertimbangan rekomendasi</h2>
+          </div>
+          <ul id="reasonList"></ul>
+        </article>
+      </section>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="features/data.js"></script>
+    <script src="features/api.js"></script>
+    <script src="features/state.js"></script>
+    <script src="features/environment-detector.js"></script>
+    <script src="features/recommendation.js"></script>
+    <script src="features/helpers.js"></script>
+    <script src="features/history.js"></script>
+    <script src="features/nearby-places.js"></script>
+    <script src="features/ui.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

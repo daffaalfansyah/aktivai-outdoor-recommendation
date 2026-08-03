@@ -1,0 +1,15 @@
+// locations.json - static list of popular Indonesian locations for autocomplete
+[
+  {"name": "Jakarta", "lat": -6.2088, "lon": 106.8456},
+  {"name": "Bandung", "lat": -6.9147, "lon": 107.6098},
+  {"name": "Surabaya", "lat": -7.2504, "lon": 112.7688},
+  {"name": "Medan " , "lat": 3.5952, "lon": 98.6722},
+  {"name": "Semarang", "lat": -6.9667, "lon": 110.4167},
+  {"name": "Denpasar", "lat": -8.6705, "lon": 115.2126},
+  {"name": "Yogyakarta", "lat": -7.7956, "lon": 110.3695},
+  {"name": "Palembang", "lat": -2.9761, "lon": 104.7754},
+  {"name": "Makassar", "lat": -5.1477, "lon": 119.4327},
+  {"name": "Balikpapan", "lat": -1.2654, "lon": 116.8312},
+  {"name": "Cilacap", "lat": -7.7180, "lon": 109.0150},
+  {"name": "Cimahi", "lat": -6.8760, "lon": 107.5405}
+]

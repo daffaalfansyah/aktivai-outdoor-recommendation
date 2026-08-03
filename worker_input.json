@@ -1,0 +1,11 @@
+{
+  "temperature": 31,
+  "humidity": 65,
+  "precipitation": 0,
+  "wind_speed": 9,
+  "aqi": 77,
+  "pm25": 18,
+  "pm10": 35,
+  "environment": "Urban",
+  "intensity": "Light"
+}
