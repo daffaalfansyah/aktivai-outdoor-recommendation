@@ -179,13 +179,25 @@ function validateModelFiles() {
   }
 }
 
+const zlib = require('zlib');
 let recommendationDatasetCache = null;
 
 async function loadRecommendationDatasetRows() {
   if (recommendationDatasetCache) return recommendationDatasetCache;
 
   try {
-    const content = await fs.promises.readFile(DATASET_PATH, 'utf8');
+    let content;
+    if (fs.existsSync(DATASET_PATH)) {
+      content = await fs.promises.readFile(DATASET_PATH, 'utf8');
+    } else {
+      const gzPath = DATASET_PATH + '.gz';
+      if (fs.existsSync(gzPath)) {
+        const compressed = await fs.promises.readFile(gzPath);
+        content = zlib.gunzipSync(compressed).toString('utf8');
+      } else {
+        return [];
+      }
+    }
     recommendationDatasetCache = parseCsvRows(content);
     return recommendationDatasetCache;
   } catch (error) {

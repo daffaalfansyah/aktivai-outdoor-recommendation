@@ -1,0 +1,6 @@
+node_modules
+dataset/recommendation_dataset.csv
+.vscode
+__pycache__
+*.pyc
+.DS_Store

@@ -53,11 +53,13 @@ def load_ml_resources() -> None:
     environment_encoder = joblib.load(env_enc_path)
     intensity_encoder = joblib.load(int_enc_path)
 
-    # 3. Pre-load unique combinations from recommendation_dataset.csv
+    # 3. Pre-load unique combinations from recommendation_dataset.csv or recommendation_dataset.csv.gz
     dataset_matching_map = {}
-    if RECOMMENDATION_CSV.exists():
+    csv_gz_path = DATASET_DIR / "recommendation_dataset.csv.gz"
+    target_csv = RECOMMENDATION_CSV if RECOMMENDATION_CSV.exists() else (csv_gz_path if csv_gz_path.exists() else None)
+    if target_csv:
         try:
-            df = pd.read_csv(RECOMMENDATION_CSV, usecols=["activity", "environment", "intensity"]).drop_duplicates()
+            df = pd.read_csv(target_csv, usecols=["activity", "environment", "intensity"]).drop_duplicates()
             for _, row in df.iterrows():
                 act = str(row["activity"]).strip()
                 env = str(row["environment"]).strip().lower()
