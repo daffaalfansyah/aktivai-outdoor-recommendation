@@ -1,3 +1,67 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9c4fd51fa97ca9d41876fc3fda6c250d12e4b608ad5bf8fe0e12274af755937f
-size 2501
+No,Activity,Intensity,Environment,Priority
+1,Fishing,Light,Water,Primary
+2,Fishing,Medium,Water,Primary
+3,Kayaking,Light,Water,Primary
+4,Kayaking,Heavy,Water,Primary
+5,Canoeing,Light,Water,Secondary
+6,Canoeing,Medium,Water,Secondary
+7,Paddle boarding,Light,Water,Secondary
+8,Paddle boarding,Medium,Water,Secondary
+9,Jalan santai,Light,Water,Secondary
+10,Jogging,Medium,Water,Secondary
+11,Yoga outdoor,Light,Water,Secondary
+12,Piknik,Light,Water,Secondary
+13,Family outing,Light,Water,Secondary
+14,Fotografi alam,Light,Water,Secondary
+15,Bermain layang-layang,Light,Water,Secondary
+16,Bird watching,Light,Water,Secondary
+17,Rafting,Heavy,Water,Secondary
+18,Hiking,Medium,Nature,Primary
+19,Trekking,Heavy,Nature,Primary
+20,Camping,Light,Nature,Secondary
+21,Camping,Medium,Nature,Secondary
+22,Backpacking,Heavy,Nature,Secondary
+23,Trail running,Heavy,Nature,Secondary
+24,Rock climbing,Heavy,Nature,Secondary
+25,Bird watching,Light,Nature,Secondary
+26,Fotografi alam,Light,Nature,Secondary
+27,Stargazing,Light,Nature,Secondary
+28,Piknik,Light,Nature,Secondary
+29,Family outing,Light,Nature,Secondary
+30,Yoga outdoor,Light,Nature,Secondary
+31,Jalan santai,Light,Nature,Secondary
+32,Sunrise hunting,Medium,Nature,Secondary
+33,Sunset hunting,Medium,Nature,Secondary
+34,Berkebun,Light,Nature,Secondary
+35,Golf,Light,Park,Primary
+36,Badminton outdoor,Heavy,Park,Primary
+37,Jalan santai,Light,Park,Secondary
+38,Jalan cepat,Medium,Park,Secondary
+39,Jogging,Medium,Park,Secondary
+40,Basket outdoor,Heavy,Park,Secondary
+41,Voli outdoor,Heavy,Park,Secondary
+42,Tennis,Heavy,Park,Secondary
+43,Pickleball,Medium,Park,Secondary
+44,Padel outdoor,Medium,Park,Secondary
+45,Frisbee,Light,Park,Secondary
+46,Ultimate Frisbee,Medium,Park,Secondary
+47,Yoga outdoor,Light,Park,Secondary
+48,Tai Chi,Light,Park,Secondary
+49,Stretching outdoor,Light,Park,Secondary
+50,Calisthenics outdoor,Heavy,Park,Secondary
+51,Piknik,Light,Park,Secondary
+52,Family outing,Light,Park,Secondary
+53,Bermain layang-layang,Light,Park,Secondary
+54,Membaca di taman,Light,Park,Secondary
+55,Roller skating,Medium,Urban,Primary
+56,Skateboarding,Medium,Urban,Primary
+57,Jalan santai,Light,Urban,Secondary
+58,Jalan cepat,Medium,Urban,Secondary
+59,Jogging,Medium,Urban,Secondary
+60,Bersepeda santai,Light,Urban,Secondary
+61,Road cycling,Heavy,Urban,Secondary
+62,BMX,Medium,Urban,Secondary
+63,Inline skating,Medium,Urban,Secondary
+64,Calisthenics outdoor,Heavy,Urban,Secondary
+65,HIIT outdoor,Heavy,Urban,Secondary
+66,Outdoor bootcamp,Heavy,Urban,Secondary
