@@ -1,12 +1,13 @@
 # Base image dengan Node.js LTS
 FROM node:20-slim
 
-# Install Python 3, pip, dan dependensi sistem yang dibutuhkan
+# Install Python 3, pip, git, dan git-lfs
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
     git \
+    git-lfs \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -15,7 +16,7 @@ WORKDIR /app
 # Copy package.json jika ada
 COPY package*.json ./
 
-# Install Node.js packages (bisa dibuat kosong jika tidak ada npm dependencies tambahan)
+# Install Node.js packages
 RUN npm install --production || true
 
 # Copy requirements.txt dan install Python ML packages
@@ -25,7 +26,10 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt || p
 # Copy seluruh source code project
 COPY . .
 
-# Environment variable Port (Render akan set variabel PORT secara otomatis)
+# Inisialisasi dan ambil (pull) file biner asli dari Git LFS (model .pkl & dataset .csv)
+RUN git lfs install && git lfs pull || true
+
+# Environment variable Port
 ENV PORT=3000
 EXPOSE 3000
 
